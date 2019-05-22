@@ -1,0 +1,19 @@
+{
+  "name": "gomannode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msaxena25/gonodeapp.git"
+  },
+  "author": "Mohit",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msaxena25/gonodeapp/issues"
+  },
+  "homepage": "https://github.com/msaxena25/gonodeapp#readme"
+}
