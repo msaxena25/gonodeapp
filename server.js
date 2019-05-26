@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const providerRoute = require('./app/routes/provider.route');
 
-let dev_db_url = 'mongodb+srv://admin:bbFCj2XeUf1zD2fG@godb-tsqac.mongodb.net/test?retryWrites=true';
+let dev_db_url = 'mongodb+srv://admin:bbFCj2XeUf1zD2fG@godb-tsqac.mongodb.net/gomandb?retryWrites=true';
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true }, (response)=>{
         console.log(response);
@@ -17,9 +17,13 @@ db.on('error', (err)=>{
     console.error('Mongo DB connection failed', err)
 });
 
+db.once('open', function() {
+    console.log("Connection Successful!");
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: false
+    extended: true
 }));
 
 
