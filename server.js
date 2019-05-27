@@ -4,20 +4,24 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const providerRoute = require('./app/routes/provider.route');
+const tokenGenerater = require('./app/auth/token-generater');
+const middleware = require('./app/auth/middleware');
 
 let dev_db_url = 'mongodb+srv://admin:bbFCj2XeUf1zD2fG@godb-tsqac.mongodb.net/gomandb?retryWrites=true';
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
-mongoose.connect(mongoDB, { useNewUrlParser: true }, (response)=>{
-        console.log(response);
+mongoose.connect(mongoDB, {
+    useNewUrlParser: true
+}, (response) => {
+    console.log(response);
 });
 //mongoose.Promise = global.Promise;
 
 let db = mongoose.connection;
-db.on('error', (err)=>{
+db.on('error', (err) => {
     console.error('Mongo DB connection failed', err)
 });
 
-db.once('open', function() {
+db.once('open', function () {
     console.log("Connection Successful!");
 });
 
@@ -29,7 +33,8 @@ app.use(bodyParser.urlencoded({
 
 
 app.use('/providers', providerRoute);
+//app.use('/providers', middleware.verifyToken , providerRoute);
 
-//app.get('/', (req, res) => res.send('Hello World!'));
+app.post('/auth', tokenGenerater.generateToken);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`app listening on port ${port}!`));
