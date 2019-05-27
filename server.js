@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const providerRoute = require('./app/routes/provider.route');
 const tokenGenerater = require('./app/auth/token-generater');
 const middleware = require('./app/auth/middleware');
+const logger = require('morgan');
 
 let dev_db_url = 'mongodb+srv://admin:bbFCj2XeUf1zD2fG@godb-tsqac.mongodb.net/gomandb?retryWrites=true';
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
@@ -26,6 +27,8 @@ db.once('open', function () {
 });
 
 app.use('/static', express.static('assets'));
+
+app.use(logger('dev'));  // Creating a logger (using morgan)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
