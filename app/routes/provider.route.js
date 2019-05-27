@@ -1,10 +1,37 @@
 const express = require('express');
 const providerCtrl = require('../controllers/provider.controller');
 const router = express.Router();
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './assets/avatar');
+    },
+    filename: (req, file, callback) => {
+        callback(null, req.params.id + '_' + file.originalname);
+    }
+});
 
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 4 * 1024 * 1024,
+    }
+})
 
 router.get('/', providerCtrl.test);
+
+router.post('/avatar/:id', upload.single('file'), (req, res, next) => {
+    if (!req.file) {
+        res.status(500);
+        res.json('file error');
+    }
+    res.status(200);
+    res.json({
+        success: true,
+        message: 'File uploaded successfully!'
+    });
+});
 
 router.get('/:id', providerCtrl.provider_detail);
 

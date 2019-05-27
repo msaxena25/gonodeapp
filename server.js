@@ -25,6 +25,8 @@ db.once('open', function () {
     console.log("Connection Successful!");
 });
 
+app.use('/static', express.static('assets'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
