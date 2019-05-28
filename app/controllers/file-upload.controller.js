@@ -5,13 +5,12 @@ const storage = multer.diskStorage({
         callback(null, './assets/avatar');
     },
     filename: (req, file, callback) => {
-        callback(null, file.originalname);
+        callback(null, req.params.id + '_' + file.originalname);
     }
 });
 
 let fileFilter = function (req, file, cb) {
     var allowedMimes = ['image/jpeg', 'image/pjpeg', 'image/png'];
-    console.log(file.mimetype);
     if (allowedMimes.includes(file.mimetype)) {
         cb(null, true);
     } else {
@@ -26,7 +25,7 @@ let fileFilter = function (req, file, cb) {
 let obj = {
     storage: storage,
     limits: {
-        fileSize: 200 * 1024
+        fileSize: 200 * 1024 * 1024
 
     },
     fileFilter: fileFilter

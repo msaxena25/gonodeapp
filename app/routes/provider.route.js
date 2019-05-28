@@ -1,11 +1,11 @@
 const express = require('express');
 const providerCtrl = require('../controllers/provider.controller');
 const router = express.Router();
-const fileUpload = require('../controllers/file-upload.controller');
+const fileUploadCtrl = require('../controllers/file-upload.controller');
 
-router.get('/', providerCtrl.test);
+router.get('/', providerCtrl.provider_findAll);
 
-router.post('/avatar/:id', fileUpload.fileUpload);
+router.post('/avatar/:id', fileUploadCtrl.fileUpload);
 
 router.get('/:id', providerCtrl.provider_detail);
 

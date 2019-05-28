@@ -1,7 +1,7 @@
 const Provider = require('../models/provider.model');
 
 //Simple version, without validation or sanitation
-exports.test = function (req, res) {
+exports.provider_findAll = function (req, res) {
     Provider.find((error, data) => {
         if (error) {
             res.status(500);

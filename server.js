@@ -4,6 +4,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const providerRoute = require('./app/routes/provider.route');
+const userRoute = require('./app/routes/user.route');
+
 const tokenGenerater = require('./app/auth/token-generater');
 const middleware = require('./app/auth/middleware');
 const logger = require('morgan');
@@ -39,6 +41,8 @@ app.use(bodyParser.urlencoded({
 
 app.use('/providers', providerRoute);
 //app.use('/providers', middleware.verifyToken , providerRoute);
+
+app.use('/users', userRoute);
 
 app.post('/auth', tokenGenerater.generateToken);
 
