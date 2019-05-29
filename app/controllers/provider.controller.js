@@ -1,8 +1,31 @@
 const Provider = require('../models/provider.model');
 
-//Simple version, without validation or sanitation
-exports.provider_findAll = function (req, res) {
-    Provider.find((error, data) => {
+ 
+exports.provider_findAll = function (req, res, next) {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || Number.MAX_SAFE_INTEGER;
+
+    let options = {
+        // select: 'name mobileNumber', 
+        //  populate: 'author',
+        lean: true,
+        page: page,
+        //offset: 20,
+        limit: limit
+    };
+    // Find data with paginate options
+    Provider.paginate({}, options).then((result, error) => {
+        if (error) {
+            res.status(500);
+            res.json(error);
+            return next(error);
+        }
+        res.status(200);
+        res.json(result);
+    })
+
+    /* // Model find without any options
+     Provider.find(query, (error, data) => {
         if (error) {
             res.status(500);
             res.json(error);
@@ -12,7 +35,27 @@ exports.provider_findAll = function (req, res) {
         res.json({
             response: data
         });
-    });
+    }); */
+
+
+    /* // Use of find with options and limit
+      let query = Provider.find({}, {}, {
+         sort: {
+             name: 'desc'
+         }
+     }).select('name').limit(3);
+     query.exec((error, data) => {
+         if (error) {
+             res.status(500);
+             res.json(error);
+             return next(error);
+         }
+         res.status(200);
+         res.json({
+             response: data
+         });
+     }) */
+
 
 };
 

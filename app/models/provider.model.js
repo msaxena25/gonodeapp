@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 
 let servicesSchema = new Schema({
@@ -41,5 +42,7 @@ let providerSchema = new Schema({
     feedback: [feedback_Schema],
     isDeleted: {type:Boolean, default:false}
 })
+
+providerSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Provider', providerSchema);
