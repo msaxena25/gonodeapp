@@ -9,6 +9,7 @@ const userRoute = require('./app/routes/user.route');
 const tokenGenerater = require('./app/auth/token-generater');
 const middleware = require('./app/auth/middleware');
 const logger = require('morgan');
+const fcmCtrl = require('./app/controllers/fcm.controller');
 
 let dev_db_url = 'mongodb+srv://admin:bbFCj2XeUf1zD2fG@godb-tsqac.mongodb.net/gomandb?retryWrites=true';
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
@@ -45,5 +46,7 @@ app.use('/providers', providerRoute);
 app.use('/users', userRoute);
 
 app.post('/auth', tokenGenerater.generateToken);
+
+app.post('/sendMessage', fcmCtrl.sendNotification);
 
 app.listen(port, () => console.log(`app listening on port ${port}!`));
