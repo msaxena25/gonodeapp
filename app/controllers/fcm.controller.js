@@ -3,6 +3,9 @@ const config = require("../config/config");
 
 const serviceAccount = require(config.fireBasePrivateKeyPath); //path/to/serviceAccountKey.json
 
+
+// Help LINK: https://www.techotopia.com/index.php/Sending_Firebase_Cloud_Messages_from_a_Node.js_Server
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: config.firebaseDataBaseURL
