@@ -1,13 +1,22 @@
-
 exports.upload = (req, res) => {
-  req.bucket.upload("assets/avatar/5ce7f5c25958b012805bb4f3_Logo-100-1.jpg").then(
+  let file = req.file;
+  if(!file) {
+    res.status(500);
+    res.json('file not found');
+    return;
+  }
+  //let newFileName = `${file.originalname}_${Date.now()}`;
+  let fileUpload = req.bucket.file(file.originalname);
+  //  req.bucket.upload("assets/avatar/5ce7f5c25958b012805bb4f3_Logo-100-1.jpg").then(   <-- if we have to upload local file pass path of that file
+  fileUpload.save(new Buffer(file.buffer)).then(   //<-- here we are uploading file from request
     result => {
       res.status(200);
-      res.json(result);
+      res.json('file uploaded successfully');
     },
     error => {
-     res.status(500);
-     res.json(error);
+      res.status(500);
+      console.log(error);
+      res.json({error: error});
     }
   );
 };

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const Multer = require("multer");
 const admin = require("firebase-admin");
 const config = require("../config/config");
 
@@ -32,6 +32,14 @@ router.use(function(req, res, next) {
 
 router.post("/notify", fcmCtrl.sendNotification);
 
-router.post("/upload", cloudStorageCtrl.upload);
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024 // no larger than 5mb, you can change as needed.
+  }
+});
+
+
+router.post("/upload", multer.single("file"), cloudStorageCtrl.upload);
 
 module.exports = router;
