@@ -1,5 +1,5 @@
 const express = require('express');
-const port = 3000;
+
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -7,11 +7,13 @@ const providerRoute = require('./app/routes/provider.route');
 const userRoute = require('./app/routes/user.route');
 
 const tokenGenerater = require('./app/auth/token-generater');
-const middleware = require('./app/auth/middleware');
+const middleware = require('./app/auth/middleware'); // currently below used code is commented
 const logger = require('morgan');
-const fcmCtrl = require('./app/controllers/fcm.controller');
+const fireBaseRoute = require('./app/routes/firebase.route');
+const config = require('./app/config/config');
 
-let dev_db_url = 'mongodb+srv://admin:bbFCj2XeUf1zD2fG@godb-tsqac.mongodb.net/gomandb?retryWrites=true';
+
+let dev_db_url = config.mongoDBURL;
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, {
     useNewUrlParser: true
@@ -47,6 +49,8 @@ app.use('/users', userRoute);
 
 app.post('/auth', tokenGenerater.generateToken);
 
-app.post('/sendMessage', fcmCtrl.sendNotification);
+app.use('/firebase', fireBaseRoute);
 
-app.listen(port, () => console.log(`app listening on port ${port}!`));
+//app.use('/cloudFileUpload', cloudStorageCtrl);
+
+app.listen(config.port, () => console.log(`app listening on port ${config.port}!`));

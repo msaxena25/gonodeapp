@@ -1,21 +1,9 @@
-const admin = require("firebase-admin");
-const config = require("../config/config");
-
-const serviceAccount = require(config.fireBasePrivateKeyPath); //path/to/serviceAccountKey.json
-
-
-// Help LINK: https://www.techotopia.com/index.php/Sending_Firebase_Cloud_Messages_from_a_Node.js_Server
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: config.firebaseDataBaseURL
-});
 
 // for now this is fixed device Id : we can fetch this one from request body
 let registrationToken =
   "eaGj-Jj3h5w:APA91bGqGJV4aTJqxd4bIYVKjLBYkhEpFKCthwFNTvskJFyL75ZtF6Tonmm3PM4qxOkJ4iqo1-z5luLBhXthBUe3o1D1k_3XdOKhE4ATFNeUh1StAMIXHcA6_iihnnhU6KzbC-Mi-8hD";
 
-exports.sendNotification = (req, res) => {
+exports.sendNotification = (req, res, next) => {
   let payload = {
     notification: {
       title: req.body.title || "This is a Notification",
@@ -27,7 +15,7 @@ exports.sendNotification = (req, res) => {
     priority: "high",
     timeToLive: 60 * 60 * 24
   };
-  admin
+  req.admin
     .messaging()
     .sendToDevice(registrationToken, payload, options)
     .then(function(response) {
@@ -41,3 +29,4 @@ exports.sendNotification = (req, res) => {
       res.json(error);
     });
 };
+
